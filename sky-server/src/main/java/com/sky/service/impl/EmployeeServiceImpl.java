@@ -83,14 +83,14 @@ public class EmployeeServiceImpl implements EmployeeService {
         // 将DTO对象属性值复制给employee对象
         BeanUtils.copyProperties(employeeDTO, employee);
 
-        // 剩下的就通过setters方法赋值就可以了
-        employee.setStatus(StatusConstant.ENABLE);
-        employee.setPassword(DigestUtils.md5DigestAsHex(PasswordConstant.DEFAULT_PASSWORD.getBytes())); // 设置默认密码
-        employee.setCreateTime(LocalDateTime.now());
-        employee.setUpdateTime(LocalDateTime.now());
-        // TODO：后期获取当前登录用户的ID
-        employee.setCreateUser(BaseContext.getCurrentId());
-        employee.setUpdateUser(BaseContext.getCurrentId());
+//        // 剩下的就通过setters方法赋值就可以了
+//        employee.setStatus(StatusConstant.ENABLE);
+//        employee.setPassword(DigestUtils.md5DigestAsHex(PasswordConstant.DEFAULT_PASSWORD.getBytes())); // 设置默认密码
+//        employee.setCreateTime(LocalDateTime.now());
+//        employee.setUpdateTime(LocalDateTime.now());
+//        // TODO：后期获取当前登录用户的ID
+//        employee.setCreateUser(BaseContext.getCurrentId());
+//        employee.setUpdateUser(BaseContext.getCurrentId());
 
         employeeMapper.insert(employee);
     }
@@ -150,8 +150,8 @@ public class EmployeeServiceImpl implements EmployeeService {
         // 将DTO对象属性值复制给employee对象
         BeanUtils.copyProperties(employeeDTO, employee);
         // 设置修改时间以及修改人
-        employee.setUpdateTime(LocalDateTime.now());
-        employee.setUpdateUser(BaseContext.getCurrentId());
+//        employee.setUpdateTime(LocalDateTime.now());
+//        employee.setUpdateUser(BaseContext.getCurrentId());
         employeeMapper.update(employee);
     }
 

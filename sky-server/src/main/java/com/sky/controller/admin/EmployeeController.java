@@ -119,3 +119,10 @@ public class EmployeeController {
         return Result.success();
     }
 }
+// TODO：讲一下分页查询
+//      首先，前端传来DTO，然后DTO转成DO，然后调用service层，service层调用mapper层，mapper层调用数据库，数据库返回DO，DO转成DTO，返回给前端
+//      分页查询：
+//          1.在service层中，启用PageHelper，设置分页参数（前端传来的DTO对象中的page、pageSize）
+//          2.然后调用mapper层中的分页查询方法，参数是DTO对象
+//          3.返回一个Page对象，Page对象中封装了分页查询结果
+//          4.Page对象转成PageResult对象，返回给controller层，controller层返回给前端

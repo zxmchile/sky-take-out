@@ -2,8 +2,11 @@ package com.sky.service;
 
 import com.sky.dto.CategoryDTO;
 import com.sky.dto.CategoryPageQueryDTO;
+import com.sky.entity.Category;
 import com.sky.result.PageResult;
 import com.sky.result.Result;
+
+import java.util.List;
 
 /**
  * projectName: sky-take-out
@@ -45,4 +48,11 @@ public interface CategoryService {
      * @param id
      */
     void startOrStop(Integer status, Long id);
+
+
+    /**
+     * 查询分类列表
+     * @return
+     */
+    List<Category> list(Integer type);
 }

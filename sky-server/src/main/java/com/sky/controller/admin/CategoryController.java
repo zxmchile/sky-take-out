@@ -2,6 +2,7 @@ package com.sky.controller.admin;
 
 import com.sky.dto.CategoryDTO;
 import com.sky.dto.CategoryPageQueryDTO;
+import com.sky.entity.Category;
 import com.sky.result.PageResult;
 import com.sky.result.Result;
 import com.sky.service.CategoryService;
@@ -10,6 +11,8 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * projectName: sky-take-out
@@ -25,6 +28,14 @@ public class CategoryController {
 
     @Autowired
     private CategoryService categoryService;
+
+    @GetMapping("/list")
+    @ApiOperation("菜品分类列表：供选择")
+    public Result<List<Category>> list(Integer type) {
+        log.info("分类列表查询");
+        List<Category> list = categoryService.list(type);
+        return Result.success(list);
+    }
 
     @PostMapping
     @ApiOperation("新增分类")
