@@ -12,6 +12,17 @@ spring:
       url: jdbc:mysql://${sky.datasource.host}:${sky.datasource.port}/${sky.datasource.database}?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
       username: ${sky.datasource.username}
       password: ${sky.datasource.password}
+      # 基本配置
+      initial-size: 5
+      min-idle: 5
+      max-active: 20
+      max-wait: 60000
+      # 解决空闲连接超时问题
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 300000
+      # 验证连接有效性
+      validation-query: SELECT 1
+      test-while-idle: true
   redis:
     host: ${sky.redis.host}
     port: ${sky.redis.port}
@@ -46,4 +57,17 @@ sky:
       access-key: ${sky.alioss.access-key}
       secret-key: ${sky.alioss.secret-key}
       bucket-name: ${sky.alioss.bucket-name}
+    user-secret-key: ${sky.jwt.user-secret-key}
+    user-ttl: ${sky.jwt.user-ttl}
+    user-token-name: ${sky.jwt.user-token-name}
+    wechat:
+      appid: ${sky.wechat.app-id}
+      secret: ${sky.wechat.app-secret}
+      mchid: ${sky.wechat.mchid}
+      mchSerialNo: ${sky.jwt.wechat.mchSerialNo}
+      privateKeyFilePath: ${sky.jwt.wechat.privateKeyFilePath}
+      apiV3Key: ${sky.jwt.wechat.apiV3Key}
+      weChatPayCertFilePath: ${sky.jwt.wechat.weChatPayCertFilePath}
+      notifyUrl: ${sky.jwt.wechat.notifyUrl}
+      refundNotifyUrl: ${sky.jwt.wechat.refundNotifyUrl}
 

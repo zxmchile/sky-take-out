@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -149,4 +150,45 @@ public class DishServiceImpl implements DishService {
             dishFlavorMapper.insertBatch(flavors);
         }
     }
+
+    /**
+     * 获取菜品列表
+     * @param dish
+     * @return
+     */
+    @Override
+    public List<DishVO> listWithFlavor(Dish dish) {
+        List<Dish> dishList = dishMapper.list(dish);
+        List<DishVO> dishVOList = new ArrayList<>();
+        for (Dish d : dishList) {
+            DishVO dishVO = new DishVO();
+            BeanUtils.copyProperties(d,dishVO);
+            dishVO.setFlavors(dishFlavorMapper.getByDishId(d.getId()));
+            dishVOList.add(dishVO);
+        }
+        return dishVOList;
+    }
+
+    /**
+     * 获取指定分类下的菜品列表
+     * @param categoryId
+     * @return
+     */
+    @Override
+    public List<Dish> list(Long categoryId) {
+        Dish dish = Dish.builder().categoryId(categoryId).status(StatusConstant.ENABLE).build();
+        List<Dish> dishList = dishMapper.list(dish);
+        return dishList;
+    }
+
+    /**
+     * 菜品起售停售
+     * @param dish
+     */
+    @Override
+    public void startOrStop(Dish dish) {
+        dishMapper.update(dish);
+    }
+
+
 }
