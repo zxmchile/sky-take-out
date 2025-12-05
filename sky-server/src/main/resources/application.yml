@@ -63,11 +63,12 @@ sky:
     wechat:
       appid: ${sky.wechat.app-id}
       secret: ${sky.wechat.app-secret}
-      mchid: ${sky.wechat.mchid}
-      mchSerialNo: ${sky.jwt.wechat.mchSerialNo}
-      privateKeyFilePath: ${sky.jwt.wechat.privateKeyFilePath}
-      apiV3Key: ${sky.jwt.wechat.apiV3Key}
-      weChatPayCertFilePath: ${sky.jwt.wechat.weChatPayCertFilePath}
-      notifyUrl: ${sky.jwt.wechat.notifyUrl}
-      refundNotifyUrl: ${sky.jwt.wechat.refundNotifyUrl}
+#      mchid: ${sky.wechat.mchid}
+#      mchSerialNo: ${sky.jwt.wechat.mchSerialNo}
+#      privateKeyFilePath: ${sky.jwt.wechat.privateKeyFilePath}
+#      apiV3Key: ${sky.jwt.wechat.apiV3Key}
+#      weChatPayCertFilePath: ${sky.jwt.wechat.weChatPayCertFilePath}
+#      notifyUrl: ${sky.jwt.wechat.notifyUrl}
+#      refundNotifyUrl: ${sky.jwt.wechat.refundNotifyUrl}
+  shop:
 

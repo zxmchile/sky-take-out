@@ -19,4 +19,7 @@
             #{detail.name})
         </foreach>
     </insert>
+    <select id="listByOrderId" resultType="com.sky.entity.OrderDetail">
+        select * from order_detail where order_id = #{id}
+    </select>
 </mapper>
