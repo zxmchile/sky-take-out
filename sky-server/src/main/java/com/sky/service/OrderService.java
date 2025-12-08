@@ -106,4 +106,10 @@ public interface OrderService {
      * @throws Exception
      */
     void complete(Long id) throws Exception;
+
+    /**
+     * 客户催单
+     * @param id
+     */
+    void reminder(Long id);
 }

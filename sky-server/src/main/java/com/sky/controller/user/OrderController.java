@@ -9,6 +9,7 @@ import com.sky.service.OrderService;
 import com.sky.vo.OrderPaymentVO;
 import com.sky.vo.OrderSubmitVO;
 import com.sky.vo.OrderVO;
+import com.sky.vo.SalesTop10ReportVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -94,6 +95,14 @@ public class OrderController {
     public Result again(@PathVariable("id") Long id) {
         log.info("再来一单");
         orderService.again(id);
+        return Result.success();
+    }
+
+    @GetMapping("/reminder/{id}")
+    @ApiOperation("订单催单")
+    public Result reminder(@PathVariable Long id) {
+        log.info("订单催单");
+        orderService.reminder(id);
         return Result.success();
     }
 }
