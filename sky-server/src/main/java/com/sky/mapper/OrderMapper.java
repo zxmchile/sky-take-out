@@ -124,4 +124,11 @@ public interface OrderMapper {
      * @return
      */
     List<GoodsSalesDTO> getSalesTop10(LocalDateTime beginTime, LocalDateTime endTime);
+
+    /**
+     * 根据条件统计营业额
+     * @param map
+     * @return
+     */
+    Double sumByMap(Map map);
 }

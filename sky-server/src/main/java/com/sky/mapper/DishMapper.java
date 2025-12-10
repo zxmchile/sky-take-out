@@ -12,6 +12,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * projectName: sky-take-out
@@ -79,4 +80,11 @@ public interface DishMapper {
      * @return
      */
     List<Dish> list(Dish dish);
+
+    /**
+     * 根据条件查询菜品数量
+     * @param map
+     * @return
+     */
+    Integer countByMap(Map map);
 }

@@ -44,7 +44,7 @@ public interface UserMapper {
      * @param endTime
      * @return
      */
-    @Select("select count(id) from user where create_time between #{begin} and #{end}")
+    @Select("select count(id) from user where create_time between #{beginTime} and #{endTime}")
     Integer countByCreateTime(LocalDateTime beginTime, LocalDateTime endTime);
 
     /**

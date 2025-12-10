@@ -5,15 +5,20 @@ import com.sky.entity.Orders;
 import com.sky.mapper.OrderMapper;
 import com.sky.mapper.UserMapper;
 import com.sky.service.ReportService;
-import com.sky.vo.OrderReportVO;
-import com.sky.vo.SalesTop10ReportVO;
-import com.sky.vo.TurnoverReportVO;
-import com.sky.vo.UserReportVO;
+import com.sky.service.WorkSpaceService;
+import com.sky.vo.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -33,6 +38,8 @@ public class ReportServiceImpl implements ReportService {
     private OrderMapper orderMapper;
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private WorkSpaceService workSpaceService;
 
     /**
      * 营业额统计——统计某个时间区间内的营业额数据
@@ -196,5 +203,64 @@ public class ReportServiceImpl implements ReportService {
                 .numberList(numberList)
                 .build();
         return salesTop10ReportVO;
+    }
+
+    /**
+     * 导出营业数据
+     * @param response
+     */
+    @Override
+    public void exportBusinessData(HttpServletResponse response) {
+        LocalDate begin = LocalDate.now().minusDays(30); // 开始时间
+        LocalDate end = LocalDate.now().minusDays(1); // 结束时间
+        LocalDateTime beginTime = LocalDateTime.of(begin, LocalTime.MIN); // 开始时间转为LocalDateTime
+        LocalDateTime endTime = LocalDateTime.of(end, LocalTime.MAX); // 结束时间转为LocalDateTime
+        // 1.查询数据
+        BusinessDataVO businessDataForDays = workSpaceService.getBusinessDataForDays(beginTime, endTime);
+        // 2.通过Apache POI将数据写到Excel中
+        InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("templates/Template.xlsx"); // 获取模板输入流
+        try {
+            // 基于模板创建Excel表格对象
+            XSSFWorkbook sheets = new XSSFWorkbook(inputStream);
+            // 获取表格对象
+            XSSFSheet sheet_1 = sheets.getSheet("Sheet1");
+            // 设置第二行数据：写入时间段
+            sheet_1.getRow(1).getCell(1).setCellValue(begin + "至" + end + "营业数据");
+            // 获取第四行
+            XSSFRow row_4 = sheet_1.getRow(3);
+            row_4.getCell(2).setCellValue(businessDataForDays.getTurnover());
+            row_4.getCell(4).setCellValue(businessDataForDays.getOrderCompletionRate());
+            row_4.getCell(6).setCellValue(businessDataForDays.getNewUsers());
+            // 获取第五行
+            XSSFRow row_5 = sheet_1.getRow(4);
+            row_5.getCell(2).setCellValue(businessDataForDays.getValidOrderCount());
+            row_5.getCell(4).setCellValue(businessDataForDays.getUnitPrice());
+
+            LocalDate date = null;
+            for (int i = 0; i < 30; i++) {
+                date = begin.plusDays(i);
+                LocalDateTime beginDateTime = LocalDateTime.of(date, LocalTime.MIN);
+                LocalDateTime endDateTime = LocalDateTime.of(date, LocalTime.MAX);
+                BusinessDataVO data = workSpaceService.getBusinessDataForDays(beginDateTime, endDateTime);
+                // 获取第8行
+                XSSFRow row_8 = sheet_1.getRow(7 + i);
+                row_8.getCell(1).setCellValue(date.toString());
+                row_8.getCell(2).setCellValue(data.getTurnover());
+                row_8.getCell(3).setCellValue(data.getValidOrderCount());
+                row_8.getCell(4).setCellValue(data.getOrderCompletionRate());
+                row_8.getCell(5).setCellValue(data.getUnitPrice());
+                row_8.getCell(6).setCellValue(data.getNewUsers());
+            }
+            // 3.通过输出流将Excel下载到客户端/浏览器
+            ServletOutputStream outputStream = response.getOutputStream(); // 获取输出流
+            sheets.write(outputStream); // 将创建好的Excel文件写入到输出流中
+
+            // 4.关闭流
+            outputStream.close();
+            sheets.close();
+            inputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
